@@ -91,6 +91,8 @@ export class AppComponent implements OnInit {
         .then(() => {
           form = ""; // clear input form value
         });
+    } else {
+      alert("飲料以及價格不可以為空白！");
     }
   }
 }
