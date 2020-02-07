@@ -1,0 +1,101 @@
+<section class="todoapp">
+  <header class="header">
+    <h1>飲料清單</h1>
+    <input id="toggle" type="checkbox" checked />
+    <label class="expand" for="toggle">我要新增飲料！</label>
+    <div id="expand">
+      <section>
+        <form #form="ngForm" (ngSubmit)="submitForm(form.value)">
+          <div class="form-group" id="expandSection">
+            <!-- 這邊的 ngModal 是單向綁定，只會送資料回去。當然我們也可以用 [(ngModal)] 來雙向綁定表格的值 -->
+            <ul class="form-style-1">
+              <li>
+                <label>飲料名稱 <span class="required">*</span></label>
+                <input type="text" name="title" ngModel class="field-long" />
+              </li>
+              <li>
+                <label>價格 <span class="required">*</span></label>
+                <input type="number" name="price" ngModel class="field-long" />
+              </li>
+              <li>
+                <label>備註</label>
+                <textarea
+                  name="comment"
+                  id="comment"
+                  ngModel
+                  class="field-long field-textarea"
+                ></textarea>
+              </li>
+              <li>
+                <input type="submit" value="新增" />
+              </li>
+            </ul>
+          </div>
+        </form>
+      </section>
+    </div>
+  </header>
+
+  <!-- This section should be hidden by default and shown when there are todos -->
+  <section class="main">
+    <ul class="todo-list">
+      <ul class="todo-list">
+        <li
+          *ngFor="let todo of todos"
+          [ngClass]="{completed: todo.isDone, editing: todo.editing}"
+        >
+          <div class="view">
+            <button class="destroy" (click)="destroyTodo(todo)"></button>
+            <label
+              ><span (dblclick)="todo.editing = true">{{todo.title}} </span>
+              $<span (dblclick)="todo.editingPrice = true"
+                >{{todo.price}}元</span
+              ></label
+            >
+            <label
+              *ngIf="todo.comment !== ''"
+              (dblclick)="todo.editingComment = true"
+              [innerHTML]="todo.comment"
+            ></label>
+          </div>
+          <input
+            class="edit"
+            #updatedTodo
+            [value]="todo.title"
+            (blur)="updateTodo(todo, updatedTodo.value)"
+            (keyup.escape)="todo.editing = false"
+            (keyup.enter)="updateTodo(todo, updatedTodo.value)"
+          />
+          <input
+            type="number"
+            class="edit"
+            #updatedTodoPrice
+            [value]="todo.price"
+            (blur)="updateTodoPrice(todo, updatedTodoPrice.value)"
+            (keyup.escape)="todo.editingPrice = false"
+            (keyup.enter)="updateTodoPrice(todo, updateTodoPrice.value)"
+          />
+          <textarea
+            type="text"
+            class="edit"
+            #updatedTodoComment
+            [innerHTML]="todo.comment"
+            [value]="todo.comment"
+            (blur)="updateTodoComment(todo, updatedTodoComment.value)"
+            (keyup.escape)="todo.editingComment = false"
+            (keyup.enter)="updateTodoComment(todo, updatedTodoComment.value)"
+          ></textarea>
+        </li>
+      </ul>
+    </ul>
+  </section>
+
+  <!-- This footer should hidden by default and shown when there are todos -->
+  <footer class="footer">
+    <!-- This should be `0 items left` by default -->
+    <span class="todo-count"
+      ><strong>目前已紀錄 {{activeTasks}} 種飲料</strong></span
+    >
+    <!-- Remove this if you don't implement routing -->
+  </footer>
+</section>

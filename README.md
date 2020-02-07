@@ -1,2 +1,0 @@
-# DrinkLists
-Created with CodeSandbox
